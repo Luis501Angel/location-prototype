@@ -146,10 +146,6 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Location Prototype'),
-        backgroundColor: Colors.blueAccent,
-      ),
       floatingActionButton: Padding(
         padding: const EdgeInsets.all(20.0),
         child: FloatingActionButton(
