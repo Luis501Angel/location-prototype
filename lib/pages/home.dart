@@ -45,9 +45,11 @@ class _HomeState extends State<Home> {
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
 
     if (!serviceEnabled) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: 
-          Text('Los servicios de ubicacion estan desactivados. Por favor activarlos')));
+      if (context.mounted) {
+         ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: 
+            Text('Los servicios de ubicacion estan desactivados. Por favor activarlos')));
+      }
       return false;
     }
 
@@ -56,16 +58,20 @@ class _HomeState extends State<Home> {
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: 
-            Text('Los servicios de ubicacion estan negados')));
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: 
+              Text('Los servicios de ubicacion estan negados')));
+        }
         return false;
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Los servicios de ubicacion estan desactivados permanenntemente.')));
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Los servicios de ubicacion estan desactivados permanenntemente.')));
+      }
       return false;
     }
 
@@ -132,7 +138,7 @@ class _HomeState extends State<Home> {
 
   Future<void> _sendDataToVidente(UserData userData) async {
     String body = jsonEncode(userData.toJson());
-    var url = Uri.parse('https://device-message-tczr3qabsq-uc.a.run.app/device-message');
+    var url = Uri.parse('');
     var response = await http.post(url, body: body);
 
     if (response.statusCode == 200) {
@@ -151,6 +157,7 @@ class _HomeState extends State<Home> {
         child: FloatingActionButton(
           onPressed: _onLocationChange,
           child: locationStatus ? const Icon(Icons.stop) : const Icon(Icons.play_arrow),
+          tooltip: locationStatus ? 'Comenzar navegacion' : 'Detener navegacion',
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

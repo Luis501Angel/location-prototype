@@ -28,12 +28,12 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: 'Location Prototype',
       theme: ThemeData(
-        primaryColor: Colors.blueAccent
+        primarySwatch: Colors.indigo,
       ),
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Location Prototype'),
-          backgroundColor: Colors.blueAccent,
+          centerTitle: true,
         ),
         body: _pages[_actualPage],
         bottomNavigationBar: BottomNavigationBar(
