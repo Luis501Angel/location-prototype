@@ -158,12 +158,12 @@ class _HomeState extends State<Home> {
         child: TextButton(
           onPressed: _onLocationChange,
           style: ButtonStyle(
-            padding: MaterialStateProperty.all(const EdgeInsets.all(15)),
+            padding: MaterialStateProperty.all(const EdgeInsets.all(12)),
             foregroundColor: MaterialStateProperty.all(Colors.indigo),
             backgroundColor: MaterialStateProperty.all(Colors.indigo),
             shape: MaterialStateProperty.all(
               RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18.0),
+                borderRadius: BorderRadius.circular(22.0),
                 side: const BorderSide(color: Colors.indigo)
               )
             )
