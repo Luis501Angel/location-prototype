@@ -133,6 +133,7 @@ class _HomeState extends State<Home> {
       var androidDeviceInfo = await deviceInfo.androidInfo;
       identifier = androidDeviceInfo.androidId!;
     }
+    print(Platform.localHostname);
     idDevice = identifier;
   }
 
