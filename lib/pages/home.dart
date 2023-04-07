@@ -155,10 +155,43 @@ class _HomeState extends State<Home> {
     return Scaffold(
       floatingActionButton: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: FloatingActionButton(
+        child: TextButton(
           onPressed: _onLocationChange,
-          child: locationStatus ? const Icon(Icons.stop) : const Icon(Icons.play_arrow),
-          tooltip: locationStatus ? 'Comenzar navegacion' : 'Detener navegacion',
+          style: ButtonStyle(
+            padding: MaterialStateProperty.all(const EdgeInsets.all(15)),
+            foregroundColor: MaterialStateProperty.all(Colors.indigo),
+            backgroundColor: MaterialStateProperty.all(Colors.indigo),
+            shape: MaterialStateProperty.all(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18.0),
+                side: const BorderSide(color: Colors.indigo)
+              )
+            )
+          ),
+          child: 
+            locationStatus ?  
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  Icon(
+                    Icons.stop,
+                    color: Colors.white,
+                    ),
+                  Text(
+                    style: TextStyle(color: Colors.white),
+                    'Detener'
+                  )
+                ],
+              ): 
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  Icon(Icons.play_arrow, color: Colors.white,),
+                  Text(
+                    style: TextStyle(color: Colors.white),
+                    '  Comenzar')
+                ],
+              ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
