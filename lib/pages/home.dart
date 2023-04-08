@@ -9,6 +9,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:motum_prototype/user_data.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -24,6 +25,7 @@ class _HomeState extends State<Home> {
   bool locationStatus = false;
   StreamSubscription<Position>? _positionStreamSubscription;
   String idDevice = "";
+  late String deviceName = "";
   late UserData user;
 
   @override
@@ -32,6 +34,7 @@ class _HomeState extends State<Home> {
     _handleLocationPermission();
     _getInitialPosition();
     _getDeviceId();
+    _checkUsername();
   }
 
   void _onMapCreated(GoogleMapController controller) async {
@@ -165,6 +168,17 @@ class _HomeState extends State<Home> {
     }
   }
 
+  Future<void> _checkUsername() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      if (prefs.getString('user') == null) {
+        prefs.setString('user', 'user${Random().nextInt(1000)}');
+    } else {
+      deviceName = prefs.getString('user')!;
+    }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -203,7 +217,7 @@ class _HomeState extends State<Home> {
                         },
                         icon: const Icon(Icons.person)),
                     Text(
-                      'user${Random().nextInt(1000)}',
+                      deviceName,
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
