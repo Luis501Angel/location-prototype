@@ -26,6 +26,7 @@ class _HomeState extends State<Home> {
   StreamSubscription<Position>? _positionStreamSubscription;
   String idDevice = "";
   late String deviceName = "";
+  late String deviceNameTemp;
   late UserData user;
 
   @override
@@ -173,10 +174,58 @@ class _HomeState extends State<Home> {
     setState(() {
       if (prefs.getString('user') == null) {
         prefs.setString('user', 'user${Random().nextInt(1000)}');
-    } else {
-      deviceName = prefs.getString('user')!;
-    }
+      } else {
+        deviceName = prefs.getString('user')!;
+      }
     });
+  }
+
+    Future<void> _changeUsername() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      if (prefs.getString('user') != null) {
+        prefs.setString('user', deviceNameTemp);
+        deviceName = deviceNameTemp;
+        deviceNameTemp = "";
+        Navigator.of(context, rootNavigator: true).pop('dialog');
+      }
+    });
+  }
+
+  Future<void> _dialogBuilder(BuildContext context) {
+    return showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Cambiar nombre de usuario'),
+            content: TextField(
+            onChanged: (value) {
+              deviceNameTemp = value;
+            },
+              decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Nuevo nombre de usuario'),
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Cerrar')),
+              TextButton(
+                onPressed: _changeUsername,
+                style: ButtonStyle(
+                  foregroundColor: MaterialStateProperty.all(Colors.blue),
+                  backgroundColor: MaterialStateProperty.all(Colors.blue),
+                ),
+                child: const Text(
+                  'Guardar',
+                  style: TextStyle(color: Colors.white),
+                ),
+              )
+            ],
+          );
+        });
   }
 
   @override
@@ -212,16 +261,14 @@ class _HomeState extends State<Home> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     IconButton(
-                        onPressed: () {
-                          print('Presionando boton');
-                        },
+                        onPressed: () => _dialogBuilder(context),
                         icon: const Icon(Icons.person)),
                     Text(
                       deviceName,
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: Colors.indigo,
+                        color: Colors.blue,
                       ),
                     ),
                     TextButton(
@@ -230,14 +277,13 @@ class _HomeState extends State<Home> {
                           padding: MaterialStateProperty.all(
                               const EdgeInsets.all(12)),
                           foregroundColor:
-                              MaterialStateProperty.all(Colors.indigo),
+                              MaterialStateProperty.all(Colors.blue),
                           backgroundColor:
-                              MaterialStateProperty.all(Colors.indigo),
+                              MaterialStateProperty.all(Colors.blue),
                           shape: MaterialStateProperty.all(
                               RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(22.0),
-                                  side:
-                                      const BorderSide(color: Colors.indigo)))),
+                                  side: const BorderSide(color: Colors.blue)))),
                       child: locationStatus
                           ? Row(
                               mainAxisSize: MainAxisSize.min,
